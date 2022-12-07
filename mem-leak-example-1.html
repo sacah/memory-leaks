@@ -1,0 +1,40 @@
+<html>
+
+<head>
+  <title>Example 1</title>
+</head>
+
+<body>
+  <div>
+    <button id="load">Load</button>
+    <button id="unload">Unload</button>
+  </div>
+
+  <div id="container"></div>
+
+  <script>
+    var divList = [];
+    document.getElementById('load').addEventListener('click', (e) => {
+      loadPage(document.getElementById('container'));
+    });
+
+    document.getElementById('unload').addEventListener('click', (e) => {
+      unloadPage(document.getElementById('container'));
+    });
+
+    function loadPage(container) {
+      for (let a=0; a < 10000; a++) {
+        const el = document.createElement('DIV');
+        el.textContent = a;
+        divList.push(el);
+        container.appendChild(el);
+      }
+    }
+
+    function unloadPage(container) {
+      container.innerHTML = '';
+    }
+  </script>
+</body>
+
+</html>

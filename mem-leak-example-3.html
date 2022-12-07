@@ -1,0 +1,156 @@
+<html>
+
+<head>
+  <title>Example 3</title>
+  <style type="text/css">
+    .wrapper {
+      box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 600px;
+    }
+
+    h1,
+    input {
+      color: #353535;
+    }
+
+    input {
+      padding: 5px;
+      border: 1px solid #ddd;
+    }
+
+    button,
+    input {
+      box-shadow: 0;
+      border-radius: 2px;
+    }
+
+    button {
+      border: 0;
+      color: #fff;
+      cursor: pointer;
+      padding: 5px 15px;
+    }
+
+    fieldset,
+    section {
+      padding: 15px;
+      border: none;
+    }
+
+    section {
+      margin-bottom: 20px;
+    }
+
+    fieldset button {
+      background: #138496;
+    }
+
+    ul,
+    li {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      padding: 5px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    li.done {
+      text-decoration: line-through;
+    }
+
+    li:hover {
+      background-color: #f8f8f8;
+    }
+
+    li button {
+      background: #C82333;
+      float: right;
+    }
+
+    li input[type="checkbox"] {
+      position: relative;
+      top: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Todo list - with memory leak</h1>
+  <div class="wrapper">
+    <form id="form">
+      <fieldset>
+        <input type="text" id="task" placeholder="enter task..." />
+        <button type="submit" id="add">add</button>
+      </fieldset>
+    </form>
+
+    <section id="todo"></section>
+  </div>
+
+  <script>
+    class Task {
+      constructor(title) {
+        this.title = title;
+        this.isDone = false;
+      }
+      render() {
+        this.element = document.createElement('li');
+        this.element.innerText = this.title;
+        this.element.className = this.isDone && 'done';
+
+        this.checkbox = document.createElement('input');
+        this.checkbox.type = 'checkbox';
+        this.checkbox.onchange = this.toggle.bind(this);
+        this.element.prepend(this.checkbox);
+        this.deleteButton = document.createElement('button');
+        this.deleteButton.type = 'button';
+        this.deleteButton.innerText = 'delete';
+        this.deleteButton.onclick = this.destroy.bind(this);
+        this.element.append(this.deleteButton);
+        this.checkbox = null;
+        this.deleteButton = null;
+        return this.element;
+      }
+      toggle() {
+        this.isDone = !this.isDone;
+        this.element.className = this.isDone && 'done';
+      }
+      destroy() {
+        this.element.remove();
+      }
+    }
+
+    class List {
+      constructor(container) {
+        this.container = container;
+        this.tasks = [];
+      }
+      render() {
+        this.element = document.createElement('ul');
+        this.container.append(this.element);
+      }
+      add(title) {
+        const task = new Task(title);
+        this.element.append(task.render());
+        this.tasks.push(task);
+      }
+    }
+
+    const list = new List(document.getElementById('todo'));
+    document.getElementById('form').onsubmit = (event) => {
+      const el = document.getElementById('task');
+      list.add(el.value);
+      el.value = '';
+      el.focus();
+      event.preventDefault();
+    };
+    list.render();
+  </script>
+</body>
+
+</html>
