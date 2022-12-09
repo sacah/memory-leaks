@@ -15,3 +15,5 @@ Taking a Snapshot will allow you to see how the last DIV is held in a function c
 This is a great little ToDo app from [Ivan Radev](https://gist.github.com/ipradev/180be1facfffcd26e476fbcececa7eed) that has a memory leak. Perfect for practising what you have learnt, see if you can diagnose and fix the problem.
 [The answer is here](https://gist.github.com/ipradev/b260ff0850de0800a5876805ec2c70e8)
 
+## Slides
+These will be released internally next week. I will announce the link in the ```#front-end-guild``` channel on Slack.
